@@ -15,14 +15,18 @@
 class Trader:
     INCREASE_THRESHOLD = 2000
 
-    def __init__(self, trader, currency, value):
+    def __init__(self, tradables, trader, currency, value):
+        self.tradables = tradables
         self.trader = trader
         self.currency = currency
         self.value = value
+        self.portfolio = 0
         print 'Now starting to trade %f %s for you' % (value, currency)
 
     def run(self, rates):
+        self.portfolio = 0
         for r in rates:
+            '''
             try:
                 if ( float(r['price_usd']) <= 1 and
                     float(r['percent_change_7d']) >= self.INCREASE_THRESHOLD ):
@@ -32,5 +36,12 @@ class Trader:
                 pass
             except:
                 pass
-            if self.currency == r['symbol']:
-                print 'Value in USD is: %f (1 %s = %s)' % (self.value * float(r['price_usd']), self.currency, r['price_usd'])
+            '''
+            for name in self.tradables:
+                if name == r['symbol']:
+                    val = float(self.tradables[name])
+                    val_usd = val * float(r['price_usd'])
+                    self.portfolio += val_usd
+                    print 'Value in USD is: %f (1 %s = %s USD)' % (val_usd, name, r['price_usd'])
+   
+        print 'Total Portfolio in USD is: %f' % (self.portfolio)

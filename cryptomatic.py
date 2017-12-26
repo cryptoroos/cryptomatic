@@ -67,7 +67,7 @@ if name in tradable_currencies.keys():
     trading_currency = name
     trading_value = float(tradable_currencies[trading_currency])
 
-    engine = algorithm.Trader(trader, trading_currency, trading_value)
+    engine = algorithm.Trader(tradable_currencies, trader, trading_currency, trading_value)
 
     #print 'Now starting to trade in %s for you' % (trading_in)
 else:
