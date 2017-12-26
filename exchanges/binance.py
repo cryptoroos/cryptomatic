@@ -9,7 +9,8 @@
 #               __/ | |                                   
 #              |___/|_|                                   
 #
-# Automatic cryptocurrency trader
+# API for Binance Crypto Currency Exchange
+#         https://www.binance.com
 # (c)CryptoRoos
 # ------------------------------------------------------------------------------
 import time

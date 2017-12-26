@@ -9,11 +9,9 @@
 #               __/ | |                                   
 #              |___/|_|                                   
 #
-# Automatic cryptocurrency trader
+# Template for the configuration file
 # (c)CryptoRoos
 # ------------------------------------------------------------------------------
-import os
-import sys
-import time
-import argparse
-from exchanges import binance
+API_KEY = ''
+API_SECRET = ''
+RECV_WINDOW = 6000000
