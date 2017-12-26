@@ -10,6 +10,7 @@
 #              |___/|_|                                   
 #
 # Template for the configuration file
+# Note: Rename the file to userconfig.py and then update the credentials
 # (c)CryptoRoos
 # ------------------------------------------------------------------------------
 API_KEY = ''
