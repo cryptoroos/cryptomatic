@@ -18,7 +18,24 @@ import time
 import argparse
 import userconfig as user
 from exchanges import binance as exchange
+from markets import coinmarketcap as market
 
+# Parsing the arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("--quantity", type=int, help="Buy/Sell Quantity", default=6)
+parser.add_argument("--symbol", type=str, help="Market Symbol (Ex: IOTABTC)", default='IOTABTC')
+parser.add_argument("--profit", type=float, help="Target Profit", default=1.3)
+parser.add_argument("--orderid", type=int, help="Target Order Id", default=0)
+parser.add_argument("--testmode", type=bool, help="Test Mode True/False", default=False)
+parser.add_argument("--wait_time", type=int, help="Wait Time (seconds)", default=3)
+parser.add_argument("--increasing", type=float, help="Buy Price +Increasing (0.00000001)", default=0.00000001)
+parser.add_argument("--decreasing", type=float, help="Sell Price -Decreasing (0.00000001)", default=0.00000001)
+option = parser.parse_args()
+
+# Populate global variables
+WAIT_TIME = option.wait_time  # seconds
+
+# Print balances of the trader
 trader = exchange.API(user.API_KEY, user.API_SECRET)
 
 balances = trader.get_account()
@@ -29,3 +46,17 @@ for balance in balances['balances'] :
     elif float(balance["free"]) > 0 :
         print '%s: %s (Free)' % (balance['asset'], balance['free'])
 
+rates = market.API()
+
+def main():
+    while True:
+
+        startTime = time.time()
+        rate = rates.get_all()
+        endTime = time.time()
+
+        if endTime - startTime < WAIT_TIME:
+            time.sleep(WAIT_TIME - (endTime - startTime))
+                   
+if __name__ == "__main__":
+    main()
