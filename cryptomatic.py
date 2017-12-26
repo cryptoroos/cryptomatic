@@ -19,6 +19,7 @@ import argparse
 import userconfig as user
 from exchanges import binance as exchange
 from markets import coinmarketcap as market
+from engine import trader as algorithm
 
 # Parsing the arguments
 parser = argparse.ArgumentParser()
@@ -63,9 +64,12 @@ for balance in balances['balances'] :
 name = "USDT"
 
 if name in tradable_currencies.keys():
-    trading_in = name
-    trading_val = float(tradable_currencies[trading_in])
-    print 'Now starting to trade in %s for you' % (trading_in)
+    trading_currency = name
+    trading_value = float(tradable_currencies[trading_currency])
+
+    engine = algorithm.Trader(trader, trading_currency, trading_value)
+
+    #print 'Now starting to trade in %s for you' % (trading_in)
 else:
     print("Invalid currency")
     raise SystemExit()
@@ -76,10 +80,7 @@ def main():
     while True:
 
         startTime = time.time()
-        rate = rates.get_all()
-        for r in rate:
-            if trading_in == r['symbol']:
-                print 'Value in USD is: %f (1 %s = %s)' % (trading_val * float(r['price_usd']), trading_in, r['price_usd'])
+        engine.run(rates.get_all())
         endTime = time.time()
 
         if endTime - startTime < WAIT_TIME:
