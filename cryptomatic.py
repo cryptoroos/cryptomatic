@@ -16,4 +16,16 @@ import os
 import sys
 import time
 import argparse
-from exchanges import binance
+import userconfig as user
+from exchanges import binance as exchange
+
+trader = exchange.API(user.API_KEY, user.API_SECRET)
+
+balances = trader.get_account()
+
+for balance in balances['balances'] :
+    if float(balance["locked"]) > 0:
+        print '%s: %s (Locked)' % (balance['asset'], balance['free'])
+    elif float(balance["free"]) > 0 :
+        print '%s: %s (Free)' % (balance['asset'], balance['free'])
+

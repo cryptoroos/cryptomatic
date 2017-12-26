@@ -22,7 +22,7 @@ try:
 except ImportError:
     from urllib.parse import urlencode
 
-class Binance:
+class API:
     BASE_URL    = "https://www.binance.com/api/v1"
     RECV_WINDOW = 120000
 
