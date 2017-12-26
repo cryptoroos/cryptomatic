@@ -40,11 +40,35 @@ trader = exchange.API(user.API_KEY, user.API_SECRET)
 
 balances = trader.get_account()
 
+tradable_currencies = {}
+
+print ("Your portfolio is as follows:")
+
 for balance in balances['balances'] :
     if float(balance["locked"]) > 0:
         print '%s: %s (Locked)' % (balance['asset'], balance['free'])
     elif float(balance["free"]) > 0 :
         print '%s: %s (Free)' % (balance['asset'], balance['free'])
+        tradable_currencies[balance['asset']] = balance["free"]
+
+
+
+#List tradable currencies
+#for asset in tradable_currencies:
+#	print '%s: %s' % (asset, tradable_currencies[asset])
+
+# Prompt the user to ask the currency to trade in
+#name = raw_input("Select the currency you want to trade in:")
+
+name = "USDT"
+
+if name in tradable_currencies.keys():
+    trading_in = name
+    trading_val = float(tradable_currencies[trading_in])
+    print 'Now starting to trade in %s for you' % (trading_in)
+else:
+    print("Invalid currency")
+    raise SystemExit()
 
 rates = market.API()
 
@@ -53,6 +77,9 @@ def main():
 
         startTime = time.time()
         rate = rates.get_all()
+        for r in rate:
+            if trading_in == r['symbol']:
+                print 'Value in USD is: %f (1 %s = %s)' % (trading_val * float(r['price_usd']), trading_in, r['price_usd'])
         endTime = time.time()
 
         if endTime - startTime < WAIT_TIME:
